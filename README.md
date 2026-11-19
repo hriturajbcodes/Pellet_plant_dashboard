@@ -1,4 +1,4 @@
-# Pellet Plant Supervisory Dashboard (Plant 2) - Jindal Steel
+# Pellet Plant Supervisory Dashboard - Jindal Steel
 
 A robust, production-ready, read-only supervisory control-room dashboard for Pellet Plant 2, Jindal Steel. Built to run 24/7 on high-resolution control-room screens and local workstations.
 
