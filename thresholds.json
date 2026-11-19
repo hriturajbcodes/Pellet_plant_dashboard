@@ -1,0 +1,12 @@
+{
+    "day_production_target_mt": 15000,
+    "gp3_setpoint_tph": 440,
+    "moisture_green_max": 10,
+    "moisture_yellow_max": 11.5,
+    "bin_starvation_pct": 15,
+    "bin_low_pct": 25,
+    "bin_overfeed_pct": 80,
+    "variance_green_tph": 5,
+    "variance_amber_tph": 20.0,
+    "stale_after_seconds": 60
+}

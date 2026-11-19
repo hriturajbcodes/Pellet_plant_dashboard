@@ -1,0 +1,35 @@
+# Secrets / environment
+.env
+!.env.example
+
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Python cache and build files
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+
+# Logs
+logs/
+*.log
+
+# Runtime data (remove this line if you want to commit sample data)
+data/
+
+# Backups and scratch folders
+.bak/
+New folder/
+*.bak
+*.tmp
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

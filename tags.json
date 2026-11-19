@@ -1,0 +1,122 @@
+[
+  {
+    "historian_tag": "DAY PRODUCTION",
+    "display_name": "Day Production",
+    "unit": "MT",
+    "min_range": 0,
+    "max_range": 16000,
+    "description": "Total cumulative production for the day"
+  },
+  {
+    "historian_tag": "GP-3 FEED",
+    "display_name": "GP-3 Primary Feed",
+    "unit": "TPH",
+    "min_range": 0,
+    "max_range": 500,
+    "description": "Primary feed rate at GP-3"
+  },
+  {
+    "historian_tag": "TG ACTUAL FEED",
+    "display_name": "TG Actual Feed",
+    "unit": "TPH",
+    "min_range": 0,
+    "max_range": 500,
+    "description": "Actual feed rate at TG conveyor"
+  },
+  {
+    "historian_tag": "MOISTURE ANAYZER MO2",
+    "display_name": "Moisture MO-2",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 15,
+    "description": "Moisture analyzer MO2 reading"
+  },
+  {
+    "historian_tag": "B BALLING DISC BIN",
+    "display_name": "Bin B",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 100,
+    "description": "Balling disc bin B level percentage"
+  },
+  {
+    "historian_tag": "C BALLING DISC BIN",
+    "display_name": "Bin C",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 100,
+    "description": "Balling disc bin C level percentage"
+  },
+  {
+    "historian_tag": "D BALLING DISC BIN",
+    "display_name": "Bin D",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 100,
+    "description": "Balling disc bin D level percentage"
+  },
+  {
+    "historian_tag": "E BALLING DISC BIN",
+    "display_name": "Bin E",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 100,
+    "description": "Balling disc bin E level percentage"
+  },
+  {
+    "historian_tag": "F BALLING DISC BIN",
+    "display_name": "Bin F",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 100,
+    "description": "Balling disc bin F level percentage"
+  },
+  {
+    "historian_tag": "G BALLING DISC BIN",
+    "display_name": "Bin G",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 100,
+    "description": "Balling disc bin G level percentage"
+  },
+  {
+    "historian_tag": "H BALLING DISC BIN",
+    "display_name": "Bin H",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 100,
+    "description": "Balling disc bin H level percentage"
+  },
+  {
+    "historian_tag": "I BALLING DISC BIN",
+    "display_name": "Bin I",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 100,
+    "description": "Balling disc bin I level percentage"
+  },
+  {
+    "historian_tag": "J BALLING DISC BIN",
+    "display_name": "Bin J",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 100,
+    "description": "Balling disc bin J level percentage"
+  },
+  {
+    "historian_tag": "K BALLING DISC BIN",
+    "display_name": "Bin K",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 100,
+    "description": "Balling disc bin K level percentage"
+  },
+  {
+    "historian_tag": "L BALLING DISC BIN",
+    "display_name": "Bin L",
+    "unit": "%",
+    "min_range": 0,
+    "max_range": 100,
+    "description": "Balling disc bin L level percentage"
+  }
+]

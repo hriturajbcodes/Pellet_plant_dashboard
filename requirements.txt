@@ -1,0 +1,6 @@
+Flask
+waitress
+pyodbc
+python-dotenv
+Werkzeug
+tzdata
