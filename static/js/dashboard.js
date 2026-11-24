@@ -78,7 +78,6 @@
   const moistGaugeMarker = document.getElementById('moist-gauge-marker');
 
   // Slim Cards
-  const valVariance = document.getElementById('val-variance');
   const valAvgBin = document.getElementById('val-avg-bin');
   const labelAvgBinCount = document.getElementById('label-avg-bin-count');
   const cardStarvation = document.getElementById('card-starvation');
@@ -368,27 +367,6 @@
     }
 
     // 3. Row 2 Slim Cards
-    if (k.variance) {
-      if (
-        k.variance.value !== null &&
-        k.variance.quality === 'GOOD'
-      ) {
-        const v = k.variance.value;
-
-        valVariance.textContent =
-          `${v > 0 ? '+' : ''}${v.toFixed(1)}`;
-
-        valVariance.style.color =
-          getStatusColor(k.variance.color);
-
-      } else {
-        valVariance.textContent = '--';
-
-        valVariance.style.color =
-          'var(--text-muted)';
-      }
-    }
-
     if (k.avg_bin) {
       valAvgBin.textContent =
         k.avg_bin.value !== null
@@ -552,45 +530,70 @@
   }
 
   // --- ALARMS & ACKNOWLEDGEMENT ---
+  // Alarm text from the server embeds the live reading
+  // (e.g. "Bin B 12.3% STARVING"), which changes on every poll.
+  // Acknowledgements are therefore tracked by a stable key with
+  // the numeric value stripped (e.g. "Bin B STARVING").
+  function alarmKey(alm) {
+    return String(alm)
+      .replace(/-?\d+(\.\d+)?\s*%/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function hideAlarmBanner() {
+    alarmBanner.classList.add('hidden');
+    alarmBanner.style.animation = 'none';
+    alarmList.innerHTML = '';
+  }
+
   function renderAlarms(alarms) {
     if (
       !alarms ||
       alarms.length === 0
     ) {
-      alarmBanner.classList.add('hidden');
-      alarmList.innerHTML = '';
+      hideAlarmBanner();
       acknowledgedAlarms.clear();
+      return;
+    }
+
+    // Forget acknowledgements for alarms that have cleared, so the
+    // alarm raises again if the condition re-occurs later.
+    const activeKeys = new Set(alarms.map(alarmKey));
+
+    acknowledgedAlarms.forEach(key => {
+      if (!activeKeys.has(key)) {
+        acknowledgedAlarms.delete(key);
+      }
+    });
+
+    // Only unacknowledged alarms are shown in the banner.
+    const pending = alarms.filter(
+      alm => !acknowledgedAlarms.has(alarmKey(alm))
+    );
+
+    if (pending.length === 0) {
+      hideAlarmBanner();
       return;
     }
 
     alarmList.innerHTML = '';
 
-    let hasUnacknowledged = false;
-
-    alarms.forEach(alm => {
+    pending.forEach(alm => {
       const span =
         document.createElement('span');
 
       span.textContent = alm;
 
       alarmList.appendChild(span);
-
-      if (!acknowledgedAlarms.has(alm)) {
-        hasUnacknowledged = true;
-      }
     });
 
     alarmBanner.classList.remove('hidden');
 
-    if (hasUnacknowledged) {
-      alarmBanner.style.animation =
-        'border-pulse 1.5s infinite';
+    alarmBanner.style.animation =
+      'border-pulse 1.5s infinite';
 
-      playAlarmBeep();
-
-    } else {
-      alarmBanner.style.animation = 'none';
-    }
+    playAlarmBeep();
   }
 
   btnAckAlarms.addEventListener('click', () => {
@@ -599,11 +602,12 @@
       lastTagState.alarms
     ) {
       lastTagState.alarms.forEach(
-        a => acknowledgedAlarms.add(a)
+        a => acknowledgedAlarms.add(alarmKey(a))
       );
 
-      alarmBanner.style.animation =
-        'none';
+      // Remove the banner immediately instead of waiting for
+      // the next poll.
+      renderAlarms(lastTagState.alarms);
     }
   });
 

@@ -430,7 +430,7 @@ body {
 /* Row 2: Slim Summary Grid */
 .grid-slim {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
 

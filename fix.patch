@@ -1,0 +1,132 @@
+diff --git a/templates/index.html b/templates/index.html
+index 911d616..2ee307d 100644
+--- a/templates/index.html
++++ b/templates/index.html
+@@ -184,14 +183,0 @@
+-      <!-- Feed Variance -->
+-      <div class="card slim-card" id="card-variance">
+-        <div class="slim-icon">
+-          <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 3L1 21h22L12 3zm0 3.99L19.53 19H4.47L12 6.99z"/></svg>
+-        </div>
+-        <div class="slim-details">
+-          <span class="slim-title">Feed Transfer Variance (TG - GP3)</span>
+-          <div class="slim-val-row">
+-            <span class="slim-value tabular" id="val-variance">--</span>
+-            <span class="val-unit">TPH</span>
+-          </div>
+-        </div>
+-      </div>
+-
+diff --git a/static/js/dashboard.js b/static/js/dashboard.js
+index 0d7afb6..e4716f7 100644
+--- a/static/js/dashboard.js
++++ b/static/js/dashboard.js
+@@ -81 +80,0 @@
+-  const valVariance = document.getElementById('val-variance');
+@@ -371,21 +369,0 @@
+-    if (k.variance) {
+-      if (
+-        k.variance.value !== null &&
+-        k.variance.quality === 'GOOD'
+-      ) {
+-        const v = k.variance.value;
+-
+-        valVariance.textContent =
+-          `${v > 0 ? '+' : ''}${v.toFixed(1)}`;
+-
+-        valVariance.style.color =
+-          getStatusColor(k.variance.color);
+-
+-      } else {
+-        valVariance.textContent = '--';
+-
+-        valVariance.style.color =
+-          'var(--text-muted)';
+-      }
+-    }
+-
+@@ -554,0 +533,17 @@
++  // Alarm text from the server embeds the live reading
++  // (e.g. "Bin B 12.3% STARVING"), which changes on every poll.
++  // Acknowledgements are therefore tracked by a stable key with
++  // the numeric value stripped (e.g. "Bin B STARVING").
++  function alarmKey(alm) {
++    return String(alm)
++      .replace(/-?\d+(\.\d+)?\s*%/g, '')
++      .replace(/\s+/g, ' ')
++      .trim();
++  }
++
++  function hideAlarmBanner() {
++    alarmBanner.classList.add('hidden');
++    alarmBanner.style.animation = 'none';
++    alarmList.innerHTML = '';
++  }
++
+@@ -560,2 +555 @@
+-      alarmBanner.classList.add('hidden');
+-      alarmList.innerHTML = '';
++      hideAlarmBanner();
+@@ -566 +560,9 @@
+-    alarmList.innerHTML = '';
++    // Forget acknowledgements for alarms that have cleared, so the
++    // alarm raises again if the condition re-occurs later.
++    const activeKeys = new Set(alarms.map(alarmKey));
++
++    acknowledgedAlarms.forEach(key => {
++      if (!activeKeys.has(key)) {
++        acknowledgedAlarms.delete(key);
++      }
++    });
+@@ -568 +570,9 @@
+-    let hasUnacknowledged = false;
++    // Only unacknowledged alarms are shown in the banner.
++    const pending = alarms.filter(
++      alm => !acknowledgedAlarms.has(alarmKey(alm))
++    );
++
++    if (pending.length === 0) {
++      hideAlarmBanner();
++      return;
++    }
+@@ -570 +580,3 @@
+-    alarms.forEach(alm => {
++    alarmList.innerHTML = '';
++
++    pending.forEach(alm => {
+@@ -577,4 +588,0 @@
+-
+-      if (!acknowledgedAlarms.has(alm)) {
+-        hasUnacknowledged = true;
+-      }
+@@ -585,3 +593,2 @@
+-    if (hasUnacknowledged) {
+-      alarmBanner.style.animation =
+-        'border-pulse 1.5s infinite';
++    alarmBanner.style.animation =
++      'border-pulse 1.5s infinite';
+@@ -589,5 +596 @@
+-      playAlarmBeep();
+-
+-    } else {
+-      alarmBanner.style.animation = 'none';
+-    }
++    playAlarmBeep();
+@@ -602 +605 @@
+-        a => acknowledgedAlarms.add(a)
++        a => acknowledgedAlarms.add(alarmKey(a))
+@@ -605,2 +608,3 @@
+-      alarmBanner.style.animation =
+-        'none';
++      // Remove the banner immediately instead of waiting for
++      // the next poll.
++      renderAlarms(lastTagState.alarms);
+diff --git a/static/css/dashboard.css b/static/css/dashboard.css
+index 6a0affd..30a77f3 100644
+--- a/static/css/dashboard.css
++++ b/static/css/dashboard.css
+@@ -433 +433 @@ body {
+-  grid-template-columns: repeat(3, 1fr);
++  grid-template-columns: repeat(2, 1fr);
+-- 
+end of patch
